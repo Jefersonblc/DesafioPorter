@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace DesafioPorter.Controllers
 {
@@ -51,11 +52,22 @@ namespace DesafioPorter.Controllers
         /* Implemente uma função que recebe uma lista de objetos e retorne uma
          * nova lista apenas com os objetos únicos, ou seja, sem repetições.
          */
-        [HttpGet(Name = "UniqueList")]
-        public ActionResult<string> UniqueList(object[] objects)
+        [HttpPost(Name = "UniqueList")]
+        public ActionResult<List<object>> UniqueList(List<object> objects)
         {
-            throw new NotImplementedException();
+            //Probably a simple HashSet would do, but the object list gets converted from a JSON, and thats chage the HashCode. 
+            //to resolve this it was created an EqualityComparer for serializing the object and then get the hashCode from the string
+
+            var ec = new ObjectSerializedEqualityComparer();
+            var hash = new HashSet<object>(ec);
+            foreach (var obj in objects) {
+                hash.Add(obj);
+            }
+
+            return hash.ToList();
         }
 
     }
+
+  
 }
