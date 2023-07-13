@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DesafioPorter.Helpers
@@ -62,6 +63,11 @@ namespace DesafioPorter.Helpers
         {
             expression = expression.Replace(" ","");
 
+            if (!CheckExpression(expression))
+            {
+                throw new ArgumentException("Equação inválida");
+            }
+
             while (expression.Contains('(') && expression.Contains(')'))
             {
                 expression = ResolveInnermostParentheses(expression);
@@ -122,6 +128,12 @@ namespace DesafioPorter.Helpers
             return values.Pop();
         }
 
+        private bool CheckExpression(string expression)
+        {
+            string pattern = @"^[\d()+\-*\/]+$";
+            return Regex.IsMatch(expression, pattern);
+        }
+
         private string ResolveInnermostParentheses(string expression)
         {
             int startIndex = expression.LastIndexOf('(');
@@ -147,7 +159,7 @@ namespace DesafioPorter.Helpers
             return (c == '+' || c == '-' || c == '*' || c == '/');
         }
 
-        static bool HasPrecedence(char operation1, char operation2)
+        private bool HasPrecedence(char operation1, char operation2)
         {
             if ((operation1 == '*' || operation1 == '/') && (operation2 == '+' || operation2 == '-'))
                 return false;
