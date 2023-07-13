@@ -19,9 +19,10 @@ namespace DesafioPorter.Controllers
          * Exemplo: 123 -> "cento e vinte e três".
          */
         [HttpGet(Name = "NumberToWords")]
-        public ActionResult<string> NumberToWords(int number)
+        public ActionResult<string> NumberToWords(long number)
         {
-            throw new NotImplementedException();
+            // Implemented as extension method
+            return number.ToWords();
         }
 
         /* Implemente uma função que recebe um array de inteiros e retorne a soma
