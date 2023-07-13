@@ -45,9 +45,10 @@ namespace DesafioPorter.Controllers
          * Exemplo: "2 + 3 * 5" -> 17.
          */
         [HttpGet(Name = "EvaluateExpression")]
-        public ActionResult<int> EvaluateExpression(string expression)
+        public ActionResult<double> EvaluateExpression(string expression)
         {
-            throw new NotImplementedException();
+            var calc = new Calculator();
+            return calc.EvaluateEquation(expression);
         }
 
         /* Implemente uma função que recebe uma lista de objetos e retorne uma
